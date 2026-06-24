@@ -27,23 +27,6 @@ The system architecture cleanly decouples memory operations from control logic t
 
 ---
 
-## 🔧 Signal Definitions
-
-| Port Signal | I/O | Width | Clock Domain | Description |
-| :--- | :---: | :---: | :---: | :--- |
-| `write_data` | Input | `[DWIDTH-1:0]` | `write_clk` | Data payload to be queued. |
-| `write_enable`| Input | `1 bit` | `write_clk` | Asserts a data write operation. |
-| `write_clk` | Input | `1 bit` | Native | Main clock driving the producer side (100 MHz default). |
-| `write_reset` | Input | `1 bit` | `write_clk` | Reset line for write-domain logic. |
-| `read_enable` | Input | `1 bit` | `read_clk` | Asserts a data read operation. |
-| `read_clk` | Input | `1 bit` | Native | Main clock driving the consumer side (~143 MHz default). |
-| `read_reset` | Input | `1 bit` | `read_clk` | Reset line for read-domain logic. |
-| `read_data` | Output| `[DWIDTH-1:0]` | `read_clk` | Dequeued output data payload. |
-| `empty` | Output| `1 bit` | `read_clk` | Status flag indicating FIFO is completely vacant. |
-| `full` | Output| `1 bit` | `write_clk` | Status flag indicating FIFO storage limits reached. |
-
----
-
 ## 🔬 Testbench & Verification Scenarios
 
 The accompanying testbench (`fifo_tb.v`) exercises the design through 13 separate verification phases, structured to handle extreme and average operations:
@@ -61,22 +44,4 @@ The accompanying testbench (`fifo_tb.v`) exercises the design through 13 separat
 - **Test 12 & 13:** Asymmetric throughput stress testing (Slow Writer/Fast Reader and Fast Writer/Slow Reader sequences).
 
 ---
-
-## 🛠 Simulation Workflow
-
-### Prerequisites
-Ensure you have an HDL Simulator installed (e.g., **Icarus Verilog**, **ModelSim**, **Vivado**, or **Verilator**), along with a waveform viewer like **GTKWave**.
-
-### Running Simulation (Via Icarus Verilog Example)
-1. Compile the source design structures and testbench together:
-   ```bash
-   iverilog -o fifo_sim fifo_tb.v fifo_top.v
-2. Execute the compiled simulation binary to generate log statements and VCD trace files:
-   ```bash
-   vvp fifo_sim
-3. Open the wave outputs for graphical investigation:
-   ```bash
-   gtkwave fifo_tb.vcd
-
-   
 
